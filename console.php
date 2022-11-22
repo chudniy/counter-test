@@ -15,8 +15,8 @@ try {
     $file = $options[CommandOptions::File->getShortName()] ?? $options[CommandOptions::File->getLongName()] ?? 'notexists.csv';
 
     $countClass = new Counter($action, $file);
-    $countClass->count($action);
+    $countClass->count();
 
-} catch (\Exception $exception) {
+} catch (Exception $exception) {
     echo $exception->getMessage() . PHP_EOL;
 }

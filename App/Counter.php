@@ -59,8 +59,9 @@ class Counter
      *
      * @throws Exception
      */
-    public function count(string $operation): void
+    public function count(): void
     {
+        $operation = $this->getOperation();
         $this->validateResourceFile();
 
         $this->logHandler->write("Started $operation operation");
