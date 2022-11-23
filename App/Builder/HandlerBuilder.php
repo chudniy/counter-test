@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Handler;
+namespace App\Builder;
 
 use Exception;
 
-abstract class BaseHandler
+class HandlerBuilder
 {
-    protected ?string $sourceFileName = null;
+    protected string $sourceFileName;
 
     protected $file;
 
     /**
      * @throws Exception
      */
-    public function __construct()
+    public function __construct($sourceFileName)
     {
-        $fileName = $this->getSourceFileName();
+        $this->sourceFileName = $sourceFileName;
         $this->prepareFile();
-        $this->file = fopen($fileName, 'a+');
+        $this->file = fopen($sourceFileName, 'a+');
 
         if($this->file === false) {
-            throw new Exception("$fileName file cannot be open for writing");
+            throw new Exception("$sourceFileName file cannot be open for writing");
         }
     }
 
@@ -67,17 +67,5 @@ abstract class BaseHandler
     {
         $message = $message."\r\n";
         fwrite($this->getFile(), $message);
-    }
-
-    /**
-     * prepare info and save it in result file
-     * @param int $value1
-     * @param int $value2
-     * @param null|int|float $result
-     */
-    public function writeSuccessResult(int $value1, int $value2, null|int|float $result) : void
-    {
-        $message = implode(";", [$value1, $value2, $result]);
-        $this->write($message);
     }
 }

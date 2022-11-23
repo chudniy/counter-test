@@ -2,15 +2,17 @@
 namespace App;
 
 use App\Enum\CountOperation;
-use App\Handler\LogHandler;
-use App\Handler\ResultHandler;
+use App\Builder\HandlerBuilder;
 use Exception;
 
 class Counter
 {
-    private ResultHandler $resultHandler;
+    private const RESULT_FILE = 'result.csv';
+    private const LOG_FILE = 'log.txt';
 
-    private LogHandler $logHandler;
+    private HandlerBuilder $resultHandler;
+
+    private HandlerBuilder $logHandler;
 
     private string $file;
 
@@ -25,8 +27,8 @@ class Counter
     {
         $this->operation = $operation;
         $this->file = $file;
-        $this->resultHandler = new ResultHandler();
-        $this->logHandler = new LogHandler();
+        $this->resultHandler = new HandlerBuilder(self::RESULT_FILE);
+        $this->logHandler = new HandlerBuilder(self::LOG_FILE);
     }
 
     /**
@@ -71,7 +73,7 @@ class Counter
             [$value1, $value2] = $this->prepareValues($line[0]);
             $result = $this->countResult($value1, $value2);
             if($this->isResultValid($result)) {
-                $this->resultHandler->writeSuccessResult($value1, $value2, $result);
+                $this->writeSuccessResult($value1, $value2, $result);
             } else {
                 $this->wrongResultLog($value1, $value2);
             }
@@ -103,6 +105,18 @@ class Counter
             return true;
 
         return false;
+    }
+
+    /**
+     * prepare info and save it in result file
+     * @param int $value1
+     * @param int $value2
+     * @param null|int|float $result
+     */
+    public function writeSuccessResult(int $value1, int $value2, null|int|float $result) : void
+    {
+        $message = implode(";", [$value1, $value2, $result]);
+        $this->resultHandler->write($message);
     }
 
     /**
