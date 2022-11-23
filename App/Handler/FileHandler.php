@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Builder;
+namespace App\Handler;
 
 use Exception;
 
-class HandlerBuilder
+class FileHandler
 {
     protected string $sourceFileName;
 

@@ -2,7 +2,7 @@
 namespace App;
 
 use App\Enum\CountOperation;
-use App\Builder\HandlerBuilder;
+use App\Handler\FileHandler;
 use Exception;
 
 class Counter
@@ -10,9 +10,9 @@ class Counter
     private const RESULT_FILE = 'result.csv';
     private const LOG_FILE = 'log.txt';
 
-    private HandlerBuilder $resultHandler;
+    private FileHandler $resultHandler;
 
-    private HandlerBuilder $logHandler;
+    private FileHandler $logHandler;
 
     private string $file;
 
@@ -27,8 +27,8 @@ class Counter
     {
         $this->operation = $operation;
         $this->file = $file;
-        $this->resultHandler = new HandlerBuilder(self::RESULT_FILE);
-        $this->logHandler = new HandlerBuilder(self::LOG_FILE);
+        $this->resultHandler = new FileHandler(self::RESULT_FILE);
+        $this->logHandler = new FileHandler(self::LOG_FILE);
     }
 
     /**
